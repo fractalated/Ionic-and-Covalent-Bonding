@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Pick two elements on the periodic table and watch the bond form: a metal and a nonmetal transfer electrons and become ions (ionic bond); two nonmetals share electrons (covalent bond).">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%E2%9A%9B%EF%B8%8F%3C%2Ftext%3E%3C%2Fsvg%3E">
+<title>Ionic and Covalent Bonding</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root[data-theme="light"]{color-scheme:light;}
+  :root{
+    --bg:#eceee9; --surface:#fbfcfa; --surface-2:#f2f4f0;
+    --ink:#171c19; --ink-2:#4c574f; --ink-3:#66706a;
+    --line:#d3d8d2; --line-2:#bcc3bb;
+    --metal:#a8552b; --nonmetal:#1d6f86;
+    --ea:#b9791a; --eb:#1769aa;
+    --hl:#b9791a; --share:#171c19;
+    --shadow:0 1px 2px rgba(23,28,25,.06), 0 8px 24px -16px rgba(23,28,25,.25);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#12161a; --surface:#1a1f24; --surface-2:#20262c;
+      --ink:#e8ece9; --ink-2:#adb8b2; --ink-3:#8e9992;
+      --line:#2b3238; --line-2:#3a434a;
+      --metal:#e0946a; --nonmetal:#6fc0d8;
+      --ea:#f0c14b; --eb:#5cb8ff;
+      --hl:#f0c14b; --share:#e8ece9;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --bg:#12161a; --surface:#1a1f24; --surface-2:#20262c;
+    --ink:#e8ece9; --ink-2:#adb8b2; --ink-3:#8e9992;
+    --line:#2b3238; --line-2:#3a434a;
+    --metal:#e0946a; --nonmetal:#6fc0d8;
+    --ea:#f0c14b; --eb:#5cb8ff;
+    --hl:#f0c14b; --share:#e8ece9;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+    font-size:15px; line-height:1.55;
+  }
+  .wrap{max-width:1280px; margin:0 auto; padding-inline:16px; padding-block:22px 40px;}
+
+  /* ---------- header ---------- */
+  header.top{display:flex; align-items:flex-start; gap:16px; margin-bottom:16px;}
+  .top-text{display:flex; flex-direction:column; gap:6px; min-width:0;}
+  .eyebrow{
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:500;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
+  }
+  h1{
+    font-family:"Instrument Serif",Georgia,serif; font-weight:400;
+    font-size:clamp(30px,5vw,44px); line-height:1.05; margin:0; text-wrap:balance;
+  }
+  .lede{color:var(--ink-2); max-width:70ch; margin:0;}
+  .lede b{color:var(--ink); font-weight:600;}
+  .btn{
+    flex:none; cursor:pointer; font-family:"IBM Plex Sans",sans-serif; font-size:12.5px; font-weight:600;
+    padding:6px 11px; border-radius:5px; border:1px solid var(--line-2);
+    background:var(--surface); color:var(--ink-2); line-height:1.2; white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--ink-3); color:var(--ink);}
+  .btn:focus-visible{outline:2px solid var(--hl); outline-offset:1px;}
+  #themeBtn{margin-left:auto;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:6px;
+    box-shadow:var(--shadow);
+  }
+
+  /* ---------- bond stage ---------- */
+  .stage{margin-bottom:16px; overflow:hidden;}
+  .pickbar{
+    display:flex; flex-wrap:wrap; align-items:center; gap:10px 12px;
+    padding:12px 16px; border-bottom:1px solid var(--line); background:var(--surface-2);
+  }
+  .slot{
+    display:flex; align-items:center; gap:9px; min-width:150px; cursor:pointer;
+    padding:6px 10px; border-radius:5px; text-align:left;
+    border:1px dashed var(--line-2); background:var(--surface); color:var(--ink-3);
+    font-family:"IBM Plex Sans",sans-serif; font-size:13px;
+  }
+  .slot.full{border-style:solid; border-color:var(--blk); color:var(--ink);}
+  .slot.next{border-color:var(--hl); color:var(--ink-2);}
+  .slot:focus-visible{outline:2px solid var(--hl); outline-offset:1px;}
+  .slot .s-sym{
+    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:22px; line-height:1;
+    color:var(--blk,var(--ink-3)); min-width:1.6em;
+  }
+  .slot .s-name{display:flex; flex-direction:column; line-height:1.2;}
+  .slot .s-kind{
+    font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--ink-3);
+  }
+  .op{font-family:"IBM Plex Mono",monospace; font-size:20px; color:var(--ink-3);}
+  .result{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; min-width:0;}
+  .formula{font-family:"IBM Plex Sans",sans-serif; font-weight:600; font-size:26px; line-height:1;}
+  .cname{font-family:"Instrument Serif",Georgia,serif; font-size:24px; line-height:1;}
+  .badge{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.1em;
+    text-transform:uppercase; padding:3px 8px; border-radius:3px; align-self:center;
+    border:1px solid currentColor;
+  }
+  .badge.ionic{color:var(--metal);}
+  .badge.covalent{color:var(--nonmetal);}
+  .pick-actions{display:flex; gap:8px; margin-left:auto;}
+
+  .stage-body{display:grid; grid-template-columns:minmax(0,1fr); align-items:start;}
+  @media (min-width:960px){ .stage-body{grid-template-columns:minmax(0,1fr) 340px;} }
+  .scene-box{padding:6px 10px 0; min-width:0;}
+  #svg{display:block; width:100%; height:auto; max-height:52vh; margin:0 auto;}
+  .e-legend{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:4px 18px;
+    padding:2px 16px 12px; font-size:12.5px; color:var(--ink-2);
+  }
+  .e-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .e-legend i{width:10px; height:10px; border-radius:50%; display:inline-block;}
+  .e-legend i.a{background:var(--ea);} .e-legend i.b{background:var(--eb);}
+  .e-legend i.sh{border-radius:2px; background:color-mix(in oklab, var(--share) 22%, transparent); border:1px dashed var(--ink-3);}
+
+  .explain{padding:14px 16px 16px; border-top:1px solid var(--line); font-size:14px;}
+  @media (min-width:960px){ .explain{border-top:0; border-left:1px solid var(--line); align-self:stretch;} }
+  .explain h2{
+    margin:0 0 8px; font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+  }
+  .explain ol{margin:0; padding-left:1.25em; display:flex; flex-direction:column; gap:7px;}
+  .explain p{margin:0;}
+  .explain b{font-weight:600;}
+  sub{font-size:.7em; line-height:0; vertical-align:-.28em;}
+  .explain .ea{color:var(--ea); font-weight:600;}
+  .explain .eb{color:var(--eb); font-weight:600;}
+  .explain .rule{
+    margin-top:12px; padding:8px 10px; border-radius:4px; background:var(--surface-2);
+    font-size:13px; color:var(--ink-2);
+  }
+
+  /* svg pieces */
+  .atom{stroke-width:2;}
+  .atom.metal{fill:color-mix(in oklab, var(--metal) 16%, var(--surface)); stroke:var(--metal);}
+  .atom.nonmetal{fill:color-mix(in oklab, var(--nonmetal) 14%, transparent); stroke:var(--nonmetal);}
+  .sym{
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600; font-size:24px;
+    fill:var(--ink); text-anchor:middle; dominant-baseline:central;
+  }
+  .e{stroke:var(--surface); stroke-width:1;}
+  .e.a{fill:var(--ea);} .e.b{fill:var(--eb);}
+  .lens{fill:color-mix(in oklab, var(--share) 20%, transparent); stroke:var(--ink-3); stroke-width:1; stroke-dasharray:3 3;}
+  .bracket{fill:none; stroke:var(--ink); stroke-width:2.2;}
+  .charge{
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600; font-size:20px;
+    text-anchor:start; dominant-baseline:central;
+  }
+  .charge.pos{fill:var(--metal);} .charge.neg{fill:var(--nonmetal);}
+  .cap{
+    font-family:"IBM Plex Sans",sans-serif; font-size:15px; fill:var(--ink-2); text-anchor:middle;
+  }
+  .cap.strong{fill:var(--ink); font-weight:600;}
+  .attract{stroke:var(--ink-3); stroke-width:1.6; fill:none; stroke-dasharray:5 4;}
+  .attract-head{fill:var(--ink-3);}
+  .empty-msg{font-family:"Instrument Serif",Georgia,serif; font-size:26px; fill:var(--ink-3); text-anchor:middle;}
+
+  /* ---------- periodic table ---------- */
+  .table-card{padding:14px 14px 16px;}
+  .table-scroll{overflow-x:auto; padding-bottom:4px;}
+  .pt{
+    display:grid; gap:3px; min-width:760px;
+    grid-template-columns:30px repeat(18, minmax(0,1fr));
+  }
+  .gh, .ph{
+    font-family:"IBM Plex Mono",ui-monospace,monospace; color:var(--ink-3);
+    display:flex; align-items:center; justify-content:center; font-size:11.5px;
+  }
+  .gh{padding-bottom:2px;}
+  .ph{justify-content:flex-end; padding-right:6px;}
+  .cell{
+    appearance:none; -webkit-appearance:none; cursor:pointer; text-align:left;
+    border:1px solid var(--line); border-radius:3px;
+    background:color-mix(in oklab, var(--blk) 12%, var(--surface));
+    color:var(--ink); padding:2px 4px 3px; min-height:46px;
+    display:flex; flex-direction:column; overflow:hidden; font:inherit;
+    transition:transform .08s ease, opacity .15s ease, border-color .12s ease;
+  }
+  .cell .z{font-family:"IBM Plex Mono",monospace; font-size:9.5px; color:var(--ink-2); line-height:1.15;}
+  .cell .sy{
+    font-family:"IBM Plex Mono",monospace; font-size:15px; font-weight:600; line-height:1.15;
+    color:color-mix(in oklab, var(--blk) 70%, var(--ink));
+  }
+  .cell .nm{font-size:8px; color:var(--ink-2); line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .cell.metal{--blk:var(--metal);}
+  .cell.nonmetal{--blk:var(--nonmetal);}
+  .cell.out{--blk:var(--ink-3); opacity:.32; cursor:default; background:var(--surface-2);}
+  .cell:not(.out):not(.off):hover{border-color:var(--blk); transform:translateY(-1px);}
+  .cell:focus-visible{outline:2px solid var(--hl); outline-offset:1px;}
+  .cell.off{opacity:.3; cursor:default;}
+  .cell.partner{box-shadow:inset 0 0 0 1.5px var(--hl);}
+  .cell.sel{
+    border-color:var(--ink); opacity:1;
+    background:color-mix(in oklab, var(--blk) 34%, var(--surface));
+    box-shadow:inset 0 0 0 1.5px var(--hl), 0 0 0 2px color-mix(in oklab, var(--ink) 30%, transparent);
+  }
+  .fgap{
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:"IBM Plex Mono",monospace; font-size:9px; color:var(--ink-3);
+    border:1px dashed var(--line-2); border-radius:3px; min-height:46px; opacity:.6;
+  }
+  .frow-label{
+    display:flex; align-items:center; justify-content:flex-end; padding-right:6px;
+    font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-3);
+  }
+  .spacer{grid-column:1 / -1; height:6px;}
+  .legend{
+    display:flex; flex-wrap:wrap; gap:6px 18px; align-items:center;
+    margin-top:12px; padding-top:11px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .legend i{
+    width:12px; height:12px; border-radius:2px; display:inline-block;
+    background:color-mix(in oklab, var(--blk) 40%, var(--surface)); border:1px solid var(--blk);
+  }
+  .legend i.metal{--blk:var(--metal);} .legend i.nonmetal{--blk:var(--nonmetal);}
+  .legend i.out{--blk:var(--ink-3); opacity:.45;}
+  .legend i.partner{--blk:var(--surface); box-shadow:inset 0 0 0 1.5px var(--hl); border-color:var(--line);}
+  .hint{font-size:13px; color:var(--ink-2); margin:10px 0 0;}
+  .hint b{color:var(--ink);}
+
+  .notes{margin-top:16px; padding:14px 16px; font-size:13.5px; color:var(--ink-2);}
+  .notes h2{
+    margin:0 0 6px; font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+  }
+  .notes ul{margin:0; padding-left:1.2em; display:flex; flex-direction:column; gap:4px;}
+  .notes b{color:var(--ink); font-weight:600;}
+
+  @media (max-width:699px){
+    .slot{min-width:0; flex:1 1 130px;}
+    .pick-actions{margin-left:0;}
+    .cell .nm{display:none;}
+    .lede{font-size:14px;}
+  }
+</style>
+<script>
+  /* Dark is the default (the electrons read better on a dark ground). Runs before
+     the body so the theme never flashes. */
+  (function(){
+    var t = null;
+    try { t = localStorage.getItem("icb-theme"); } catch (e) {}
+    document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
+  })();
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="top-text">
+      <div class="eyebrow">Chemical bonds · Lewis dot model</div>
+      <h1>Ionic and Covalent Bonding</h1>
+      <p class="lede">Pick two elements from the table. A <b>metal + nonmetal</b> transfer electrons and become oppositely charged ions: an <b>ionic bond</b>. Two <b>nonmetals</b> share pairs of electrons: a <b>covalent bond</b>.</p>
+    </div>
+    <button type="button" id="themeBtn" class="btn">Light mode</button>
+  </header>
+
+  <section class="card stage" aria-label="Bond diagram">
+    <div class="pickbar">
+      <button type="button" class="slot" id="slot0"></button>
+      <span class="op" aria-hidden="true">+</span>
+      <button type="button" class="slot" id="slot1"></button>
+      <span class="op" aria-hidden="true">→</span>
+      <div class="result" id="result"></div>
+      <div class="pick-actions">
+        <button type="button" class="btn" id="replayBtn">↻ Replay</button>
+        <button type="button" class="btn" id="clearBtn">Clear</button>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="scene-box">
+        <svg id="svg" viewBox="185 0 530 360" role="img" aria-labelledby="svgTitle">
+          <title id="svgTitle">Bond diagram</title>
+          <g id="layer"></g>
+        </svg>
+        <div class="e-legend" id="eLegend"></div>
+      </div>
+      <div class="explain" id="explain" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="card table-card" aria-label="Periodic table">
+    <div class="table-scroll"><div class="pt" id="pt"></div></div>
+    <div class="legend">
+      <span><i class="metal"></i>Metal (loses electrons)</span>
+      <span><i class="nonmetal"></i>Nonmetal (gains or shares electrons)</span>
+      <span><i class="partner"></i>Can bond with your first pick</span>
+      <span><i class="out"></i>Not included here</span>
+    </div>
+    <p class="hint" id="hint"></p>
+  </section>
+
+  <section class="card notes">
+    <h2>What's left out, and why</h2>
+    <ul>
+      <li>Only pairs that follow the simple rules are included: metals lose all their valence electrons, nonmetals gain or share until they have 8 (hydrogen: 2), and every compound shown really exists with that formula.</li>
+      <li><b>Transition metals, metalloids, noble gases</b>, and the radioactive Fr and Ra are greyed out.</li>
+      <li><b>Beryllium</b> is a metal, but its compounds (like BeCl₂) are covalent, so it's left out.</li>
+      <li><b>Aluminum</b> pairs only with oxygen and fluorine. Its chloride, bromide, iodide, sulfide, and nitride are largely covalent.</li>
+      <li><b>Nitrides</b> appear only for lithium and the group 2 metals; the other alkali metals don't form stable ones. Metals with H, C, or P (hydrides, carbides, phosphides) are left out.</li>
+      <li><b>Nonmetal pairs</b> are left out when the octet rule doesn't predict the real molecule: N + O and S + O (NO, NO₂, SO₂…), P + O, C + N, sulfur fluorides (SF₆), and unstable ones like NBr₃ and NI₃. C, P, S, and Se bonded to themselves form chains and rings, not simple molecules.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* Z, symbol, name, period, group (0 = f-block row) */
+  var E = [
+    [1,"H","Hydrogen",1,1],[2,"He","Helium",1,18],
+    [3,"Li","Lithium",2,1],[4,"Be","Beryllium",2,2],[5,"B","Boron",2,13],
+    [6,"C","Carbon",2,14],[7,"N","Nitrogen",2,15],[8,"O","Oxygen",2,16],
+    [9,"F","Fluorine",2,17],[10,"Ne","Neon",2,18],
+    [11,"Na","Sodium",3,1],[12,"Mg","Magnesium",3,2],[13,"Al","Aluminum",3,13],
+    [14,"Si","Silicon",3,14],[15,"P","Phosphorus",3,15],[16,"S","Sulfur",3,16],
+    [17,"Cl","Chlorine",3,17],[18,"Ar","Argon",3,18],
+    [19,"K","Potassium",4,1],[20,"Ca","Calcium",4,2],[21,"Sc","Scandium",4,3],
+    [22,"Ti","Titanium",4,4],[23,"V","Vanadium",4,5],[24,"Cr","Chromium",4,6],
+    [25,"Mn","Manganese",4,7],[26,"Fe","Iron",4,8],[27,"Co","Cobalt",4,9],
+    [28,"Ni","Nickel",4,10],[29,"Cu","Copper",4,11],[30,"Zn","Zinc",4,12],
+    [31,"Ga","Gallium",4,13],[32,"Ge","Germanium",4,14],[33,"As","Arsenic",4,15],
+    [34,"Se","Selenium",4,16],[35,"Br","Bromine",4,17],[36,"Kr","Krypton",4,18],
+    [37,"Rb","Rubidium",5,1],[38,"Sr","Strontium",5,2],[39,"Y","Yttrium",5,3],
+    [40,"Zr","Zirconium",5,4],[41,"Nb","Niobium",5,5],[42,"Mo","Molybdenum",5,6],
+    [43,"Tc","Technetium",5,7],[44,"Ru","Ruthenium",5,8],[45,"Rh","Rhodium",5,9],
+    [46,"Pd","Palladium",5,10],[47,"Ag","Silver",5,11],[48,"Cd","Cadmium",5,12],
+    [49,"In","Indium",5,13],[50,"Sn","Tin",5,14],[51,"Sb","Antimony",5,15],
+    [52,"Te","Tellurium",5,16],[53,"I","Iodine",5,17],[54,"Xe","Xenon",5,18],
+    [55,"Cs","Cesium",6,1],[56,"Ba","Barium",6,2],
+    [57,"La","Lanthanum",6,0],[58,"Ce","Cerium",6,0],[59,"Pr","Praseodymium",6,0],
+    [60,"Nd","Neodymium",6,0],[61,"Pm","Promethium",6,0],[62,"Sm","Samarium",6,0],
+    [63,"Eu","Europium",6,0],[64,"Gd","Gadolinium",6,0],[65,"Tb","Terbium",6,0],
+    [66,"Dy","Dysprosium",6,0],[67,"Ho","Holmium",6,0],[68,"Er","Erbium",6,0],
+    [69,"Tm","Thulium",6,0],[70,"Yb","Ytterbium",6,0],[71,"Lu","Lutetium",6,0],
+    [72,"Hf","Hafnium",6,4],[73,"Ta","Tantalum",6,5],[74,"W","Tungsten",6,6],
+    [75,"Re","Rhenium",6,7],[76,"Os","Osmium",6,8],[77,"Ir","Iridium",6,9],
+    [78,"Pt","Platinum",6,10],[79,"Au","Gold",6,11],[80,"Hg","Mercury",6,12],
+    [81,"Tl","Thallium",6,13],[82,"Pb","Lead",6,14],[83,"Bi","Bismuth",6,15],
+    [84,"Po","Polonium",6,16],[85,"At","Astatine",6,17],[86,"Rn","Radon",6,18],
+    [87,"Fr","Francium",7,1],[88,"Ra","Radium",7,2],
+    [89,"Ac","Actinium",7,0],[90,"Th","Thorium",7,0],[91,"Pa","Protactinium",7,0],
+    [92,"U","Uranium",7,0],[93,"Np","Neptunium",7,0],[94,"Pu","Plutonium",7,0],
+    [95,"Am","Americium",7,0],[96,"Cm","Curium",7,0],[97,"Bk","Berkelium",7,0],
+    [98,"Cf","Californium",7,0],[99,"Es","Einsteinium",7,0],[100,"Fm","Fermium",7,0],
+    [101,"Md","Mendelevium",7,0],[102,"No","Nobelium",7,0],[103,"Lr","Lawrencium",7,0],
+    [104,"Rf","Rutherfordium",7,4],[105,"Db","Dubnium",7,5],[106,"Sg","Seaborgium",7,6],
+    [107,"Bh","Bohrium",7,7],[108,"Hs","Hassium",7,8],[109,"Mt","Meitnerium",7,9],
+    [110,"Ds","Darmstadtium",7,10],[111,"Rg","Roentgenium",7,11],[112,"Cn","Copernicium",7,12],
+    [113,"Nh","Nihonium",7,13],[114,"Fl","Flerovium",7,14],[115,"Mc","Moscovium",7,15],
+    [116,"Lv","Livermorium",7,16],[117,"Ts","Tennessine",7,17],[118,"Og","Oganesson",7,18]
+  ];
+  var EL = {};
+  E.forEach(function(e){ EL[e[1]] = {z:e[0], sym:e[1], name:e[2], period:e[3], group:e[4]}; });
+
+  /* ---------- the rules ---------- */
+  var METALS = ["Li","Na","K","Rb","Cs","Mg","Ca","Sr","Ba","Al"];
+  var NONMETALS = ["H","C","N","O","F","P","S","Cl","Se","Br","I"];
+  var VAL = {H:1, Li:1, Na:1, K:1, Rb:1, Cs:1, Mg:2, Ca:2, Sr:2, Ba:2, Al:3,
+             C:4, N:5, P:5, O:6, S:6, Se:6, F:7, Cl:7, Br:7, I:7};
+  var CHARGE = {Li:1, Na:1, K:1, Rb:1, Cs:1, Mg:2, Ca:2, Sr:2, Ba:2, Al:3,
+                N:-3, O:-2, S:-2, Se:-2, F:-1, Cl:-1, Br:-1, I:-1};
+  var ANION = {N:"nitride", O:"oxide", S:"sulfide", Se:"selenide",
+               F:"fluoride", Cl:"chloride", Br:"bromide", I:"iodide"};
+  /* the noble gas each ion (or bonded atom) ends up matching */
+  var NOBLE = {H:"helium", Li:"helium", Na:"neon", K:"argon", Rb:"krypton", Cs:"xenon",
+               Mg:"neon", Ca:"argon", Sr:"krypton", Ba:"xenon", Al:"neon",
+               C:"neon", N:"neon", O:"neon", F:"neon", P:"argon", S:"argon", Cl:"argon",
+               Se:"krypton", Br:"krypton", I:"xenon"};
+
+  function ionicOK(m, x){
+    if (METALS.indexOf(m) < 0 || !ANION[x]) return false;
+    if (m === "Al") return x === "O" || x === "F";
+    if (x === "N") return ["Li","Mg","Ca","Sr","Ba"].indexOf(m) >= 0;
+    return true;
+  }
+
+  /* covalent molecules: central atom, outer atom, how many outer atoms, bond order.
+     Every one is a real molecule whose Lewis structure follows the octet (duet for H) rule. */
+  var COV = {};
+  [
+    ["H","H",1,1,"H₂","hydrogen (diatomic)"],
+    ["N","N",1,3,"N₂","nitrogen (diatomic)"],
+    ["O","O",1,2,"O₂","oxygen (diatomic)"],
+    ["F","F",1,1,"F₂","fluorine (diatomic)"],
+    ["Cl","Cl",1,1,"Cl₂","chlorine (diatomic)"],
+    ["Br","Br",1,1,"Br₂","bromine (diatomic)"],
+    ["I","I",1,1,"I₂","iodine (diatomic)"],
+    ["H","F",1,1,"HF","hydrogen fluoride"],
+    ["H","Cl",1,1,"HCl","hydrogen chloride"],
+    ["H","Br",1,1,"HBr","hydrogen bromide"],
+    ["H","I",1,1,"HI","hydrogen iodide"],
+    ["Cl","F",1,1,"ClF","chlorine monofluoride"],
+    ["Br","Cl",1,1,"BrCl","bromine monochloride"],
+    ["I","Cl",1,1,"ICl","iodine monochloride"],
+    ["I","Br",1,1,"IBr","iodine monobromide"],
+    ["O","H",2,1,"H₂O","water"],
+    ["S","H",2,1,"H₂S","hydrogen sulfide"],
+    ["Se","H",2,1,"H₂Se","hydrogen selenide"],
+    ["N","H",3,1,"NH₃","ammonia"],
+    ["P","H",3,1,"PH₃","phosphine"],
+    ["C","H",4,1,"CH₄","methane"],
+    ["C","F",4,1,"CF₄","carbon tetrafluoride"],
+    ["C","Cl",4,1,"CCl₄","carbon tetrachloride"],
+    ["C","Br",4,1,"CBr₄","carbon tetrabromide"],
+    ["C","I",4,1,"CI₄","carbon tetraiodide"],
+    ["N","F",3,1,"NF₃","nitrogen trifluoride"],
+    ["N","Cl",3,1,"NCl₃","nitrogen trichloride"],
+    ["P","F",3,1,"PF₃","phosphorus trifluoride"],
+    ["P","Cl",3,1,"PCl₃","phosphorus trichloride"],
+    ["P","Br",3,1,"PBr₃","phosphorus tribromide"],
+    ["P","I",3,1,"PI₃","phosphorus triiodide"],
+    ["O","F",2,1,"OF₂","oxygen difluoride"],
+    ["O","Cl",2,1,"Cl₂O","dichlorine monoxide"],
+    ["S","Cl",2,1,"SCl₂","sulfur dichloride"],
+    ["C","O",2,2,"CO₂","carbon dioxide"],
+    ["C","S",2,2,"CS₂","carbon disulfide"],
+    ["C","Se",2,2,"CSe₂","carbon diselenide"]
+  ].forEach(function(r){
+    COV[pairKey(r[0], r[1])] = {c:r[0], t:r[1], n:r[2], o:r[3], formula:r[4], name:r[5]};
+  });
+
+  function pairKey(a, b){ return [a, b].sort().join("|"); }
+  function gcd(a, b){ return b ? gcd(b, a % b) : a; }
+  var SUB = "₀₁₂₃₄₅₆₇₈₉";
+  function sub(n){ return n > 1 ? String(n).split("").map(function(d){ return SUB[+d]; }).join("") : ""; }
+  function chargeText(q){
+    var s = Math.abs(q) > 1 ? String(Math.abs(q)) : "";
+    return s + (q > 0 ? "+" : "−");
+  }
+  function chargeSup(q){
+    var m = {"1":"¹","2":"²","3":"³"}, a = Math.abs(q);
+    return (a > 1 ? m[a] : "") + (q > 0 ? "⁺" : "⁻");
+  }
+  function lower(s){ return EL[s].name.toLowerCase(); }
+  /* the fonts have no subscript digits, so formulas are drawn with real subscripts */
+  function subHTML(s){
+    return s.replace(/[₀-₉]+/g, function(m){
+      return "<sub>" + m.split("").map(function(c){ return SUB.indexOf(c); }).join("") + "</sub>";
+    });
+  }
+  function svgText(el, s){
+    s.split(/([₀-₉]+)/).forEach(function(part, i){
+      if (!part) return;
+      var ts = document.createElementNS(NS, "tspan");
+      if (i % 2){
+        ts.textContent = part.split("").map(function(c){ return SUB.indexOf(c); }).join("");
+        ts.setAttribute("dy", "5"); ts.setAttribute("font-size", "11");
+      } else {
+        ts.textContent = part;
+        if (i) ts.setAttribute("dy", "-5");
+      }
+      el.appendChild(ts);
+    });
+  }
+  function plural(n, word){ return n + " " + word + (n === 1 ? "" : "s"); }
+
+  function bondFor(a, b){
+    if (ionicOK(a, b)) return ionic(a, b);
+    if (ionicOK(b, a)) return ionic(b, a);
+    var c = COV[pairKey(a, b)];
+    if (c) return {type:"covalent", c:c.c, t:c.t, n:c.n, o:c.o, formula:c.formula, name:c.name};
+    return null;
+  }
+  function ionic(m, x){
+    var qm = CHARGE[m], qx = -CHARGE[x], g = gcd(qm, qx);
+    var nm = qx / g, nx = qm / g;
+    return {type:"ionic", m:m, x:x, qm:qm, qx:qx, nm:nm, nx:nx,
+            formula: m + sub(nm) + x + sub(nx), name: lower(m) + " " + ANION[x]};
+  }
+
+  var INCLUDED = METALS.concat(NONMETALS);
+  function partnersOf(a){ return INCLUDED.filter(function(b){ return bondFor(a, b); }); }
+
+  /* ---------- drawing helpers ---------- */
+  var NS = "http://www.w3.org/2000/svg";
+  var svg = document.getElementById("svg");
+  var layer = document.getElementById("layer");
+  function mk(tag, attrs, parent){
+    var el = document.createElementNS(NS, tag);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    (parent || layer).appendChild(el);
+    return el;
+  }
+
+  var R = 40;        /* atom circle */
+  var D = 26;        /* dot distance from the nucleus */
+  var PAIR = 6;      /* half the gap between the two dots of a pair */
+  var DOT = 4.6;     /* dot radius */
+  /* sides: 0 right, 1 down, 2 left, 3 up */
+  var SIDE = [[1,0],[0,1],[-1,0],[0,-1]];
+  function opp(s){ return (s + 2) % 4; }
+  function dotAt(x, y, side, slot){
+    var d = SIDE[side];
+    return {x: x + d[0]*D - d[1]*PAIR*slot, y: y + d[1]*D + d[0]*PAIR*slot};
+  }
+
+  function ease(p){ return p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2; }
+  function clamp(p){ return p < 0 ? 0 : p > 1 ? 1 : p; }
+  /* a track is a list of keyframes {t, x, y, r?, arc?}; arc bends the segment that ends there */
+  function at(tr, T){
+    if (T <= tr[0].t) return tr[0];
+    for (var i = 1; i < tr.length; i++){
+      var b = tr[i];
+      if (T < b.t){
+        var a = tr[i-1], p = ease((T - a.t)/(b.t - a.t));
+        var x = a.x + (b.x - a.x)*p, y = a.y + (b.y - a.y)*p;
+        if (b.arc){
+          var dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, k = 4*p*(1 - p)*b.arc;
+          x += -dy/L*k; y += dx/L*k;
+        }
+        return {x:x, y:y, r: a.r != null ? a.r + (b.r - a.r)*p : null};
+      }
+    }
+    return tr[tr.length - 1];
+  }
+  function still(x, y, r){ return [{t:0, x:x, y:y, r:r}]; }
+  function newScene(){ layer.textContent = ""; return {atoms:[], electrons:[], fades:[], end:0}; }
+
+  function addAtom(sc, sym, kind, track){
+    var g = mk("g", {});
+    var c = mk("circle", {"class":"atom " + kind, r:R}, g);
+    var t = mk("text", {"class":"sym"}, g);
+    t.textContent = sym;
+    var a = {track:track, circle:c, label:t};
+    sc.atoms.push(a);
+    return a;
+  }
+  function addElectron(sc, who, track){
+    sc.electrons.push({track:track, el:null, who:who});
+  }
+  function fade(sc, el, t0, t1, from, to){
+    sc.fades.push({el:el, t0:t0, t1:t1, from:from, to:to});
+    el.style.opacity = from;
+  }
+  /* electrons go on top of everything drawn so far */
+  function placeElectrons(sc){
+    sc.electrons.forEach(function(e){ e.el = mk("circle", {"class":"e " + e.who, r:DOT}); });
+  }
+
+  function draw(sc, T){
+    sc.atoms.forEach(function(a){
+      var p = at(a.track, T);
+      a.circle.setAttribute("cx", p.x); a.circle.setAttribute("cy", p.y);
+      if (p.r != null) a.circle.setAttribute("r", p.r);
+      a.label.setAttribute("x", p.x); a.label.setAttribute("y", p.y);
+    });
+    sc.electrons.forEach(function(e){
+      var p = at(e.track, T);
+      e.el.setAttribute("cx", p.x); e.el.setAttribute("cy", p.y);
+    });
+    sc.fades.forEach(function(f){
+      var p = clamp((T - f.t0)/(f.t1 - f.t0));
+      f.el.style.opacity = f.from + (f.to - f.from)*p;
+    });
+  }
+
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var raf = 0, current = null;
+  function play(sc){
+    cancelAnimationFrame(raf);
+    current = sc;
+    if (reduced){ draw(sc, sc.end + 1); return; }
+    var start = performance.now();
+    draw(sc, 0);
+    function step(now){
+      var T = now - start;
+      draw(sc, T);
+      if (T <= sc.end) raf = requestAnimationFrame(step);
+    }
+    raf = requestAnimationFrame(step);
+  }
+
+  /* ---------- scenes ---------- */
+  function emptyScene(){
+    var sc = newScene();
+    var t = mk("text", {"class":"empty-msg", x:450, y:170});
+    t.textContent = "Pick two elements from the table below";
+    return sc;
+  }
+
+  /* one atom on its own: its Lewis dot symbol */
+  function atomScene(sym){
+    var sc = newScene();
+    var kind = METALS.indexOf(sym) >= 0 ? "metal" : "nonmetal";
+    addAtom(sc, sym, kind, still(450, 170, R));
+    var order = [3, 0, 1, 2], count = [0,0,0,0], v = VAL[sym], k;
+    for (k = 0; k < v; k++) count[order[k % 4]]++;
+    order.forEach(function(s){
+      if (count[s] === 1) addElectron(sc, "a", [dotAt(450, 170, s, 0)].map(t0));
+      if (count[s] === 2){
+        addElectron(sc, "a", [dotAt(450, 170, s, -1)].map(t0));
+        addElectron(sc, "a", [dotAt(450, 170, s, 1)].map(t0));
+      }
+    });
+    var cap = mk("text", {"class":"cap", x:450, y:262});
+    cap.textContent = EL[sym].name + ": " + plural(v, "valence electron");
+    placeElectrons(sc);
+    return sc;
+  }
+  function t0(p){ return {t:0, x:p.x, y:p.y}; }
+
+  function ionicScene(b){
+    var sc = newScene();
+    var MX0 = 250, MX1 = 340, XX0 = 650, XX1 = 560, CY = 170, GAP = 108;
+    var R_CAT = 27, R_AN = 44;
+    var T0 = 900, STAGGER = 650, TRAVEL = 1000;
+    var total = b.nm * b.qm;                    /* electrons that move */
+    var lastArrive = T0 + (total - 1)*STAGGER + TRAVEL;
+    var T2 = lastArrive + 500, MOVE = 900, END = T2 + MOVE;
+    function ys(n, i){ return CY + (i - (n - 1)/2)*GAP; }
+
+    var mSides = [0, 3, 1];                     /* metal's valence electrons: right, up, down */
+    var xSingles = [2, 3, 1].slice(0, b.qx);   /* nonmetal's unpaired electrons face the metal first */
+    var xPairs = [0,1,2,3].filter(function(s){ return xSingles.indexOf(s) < 0; })
+                          .slice(0, (VAL[b.x] - b.qx)/2);
+
+    var i, j, k;
+    for (i = 0; i < b.nm; i++){
+      var my = ys(b.nm, i);
+      addAtom(sc, b.m, "metal", [{t:0, x:MX0, y:my, r:R}, {t:T2, x:MX0, y:my, r:R}, {t:END, x:MX1, y:my, r:R_CAT}]);
+    }
+    for (j = 0; j < b.nx; j++){
+      var xy = ys(b.nx, j);
+      addAtom(sc, b.x, "nonmetal", [{t:0, x:XX0, y:xy, r:R}, {t:T2, x:XX0, y:xy, r:R}, {t:END, x:XX1, y:xy, r:R_AN}]);
+      /* the nonmetal's own lone pairs ride along when the ions move */
+      xPairs.forEach(function(s){
+        [-1, 1].forEach(function(slot){
+          var a = dotAt(XX0, xy, s, slot), z = dotAt(XX1, xy, s, slot);
+          addElectron(sc, "b", [{t:0, x:a.x, y:a.y}, {t:T2, x:a.x, y:a.y}, {t:END, x:z.x, y:z.y}]);
+        });
+      });
+    }
+    /* transfer: metal electron number e goes to vacancy number e */
+    for (var e = 0; e < total; e++){
+      i = Math.floor(e / b.qm); k = e % b.qm;
+      j = Math.floor(e / b.qx);
+      var side = xSingles[e % b.qx];
+      var my2 = ys(b.nm, i), xy2 = ys(b.nx, j);
+      var dep = T0 + e*STAGGER, arr = dep + TRAVEL;
+      var from = dotAt(MX0, my2, mSides[k], 0);
+      var to = dotAt(XX0, xy2, side, 1), toEnd = dotAt(XX1, xy2, side, 1);
+      addElectron(sc, "a", [{t:0, x:from.x, y:from.y}, {t:dep, x:from.x, y:from.y},
+        {t:arr, x:to.x, y:to.y, arc:-55}, {t:T2, x:to.x, y:to.y}, {t:END, x:toEnd.x, y:toEnd.y}]);
+      /* the nonmetal's unpaired electron on that side slides over to make room */
+      var s0 = dotAt(XX0, xy2, side, 0), s1 = dotAt(XX0, xy2, side, -1), s2 = dotAt(XX1, xy2, side, -1);
+      addElectron(sc, "b", [{t:0, x:s0.x, y:s0.y}, {t:arr - 350, x:s0.x, y:s0.y}, {t:arr, x:s1.x, y:s1.y},
+        {t:T2, x:s1.x, y:s1.y}, {t:END, x:s2.x, y:s2.y}]);
+    }
+
+    /* charges and brackets for the ions */
+    var FADE0 = T2 + MOVE*0.6, FADE1 = END + 300;
+    for (i = 0; i < b.nm; i++){
+      var cy = ys(b.nm, i);
+      var cq = mk("text", {"class":"charge pos", x:MX1 + R_CAT + 2, y:cy - R_CAT + 2});
+      cq.textContent = chargeText(b.qm);
+      fade(sc, cq, FADE0, FADE1, 0, 1);
+    }
+    for (j = 0; j < b.nx; j++){
+      var ay = ys(b.nx, j), w = 52, h = 45;
+      var br = mk("path", {"class":"bracket",
+        d:"M" + (XX1 - w + 7) + " " + (ay - h) + "h-7v" + 2*h + "h7" +
+          "M" + (XX1 + w - 7) + " " + (ay - h) + "h7v" + 2*h + "h-7"});
+      var aq = mk("text", {"class":"charge neg", x:XX1 + w + 4, y:ay - h + 6});
+      aq.textContent = chargeText(-b.qx);
+      fade(sc, br, FADE0, FADE1, 0, 1);
+      fade(sc, aq, FADE0, FADE1, 0, 1);
+    }
+    /* attraction between the ions */
+    var mid = mk("g", {});
+    var ax0 = MX1 + R_CAT + 34, ax1 = XX1 - 52 - 14;
+    mk("line", {"class":"attract", x1:ax0 + 8, y1:CY, x2:ax1 - 8, y2:CY}, mid);
+    mk("path", {"class":"attract-head", d:"M" + ax0 + " " + CY + "l10 -6v12z"}, mid);
+    mk("path", {"class":"attract-head", d:"M" + ax1 + " " + CY + "l-10 -6v12z"}, mid);
+    fade(sc, mid, END, END + 500, 0, 1);
+
+    /* captions under each column, swapping from atoms to ions */
+    var mName = lower(b.m), xName = lower(b.x);
+    capSwap(sc, MX0, MX1, (b.nm > 1 ? b.nm + " " + mName + " atoms" : mName + " atom"),
+      (b.nm > 1 ? b.nm + " " : "") + b.m + chargeSup(b.qm) + (b.nm > 1 ? " ions" : " ion"), T2, END);
+    capSwap(sc, XX0, XX1, (b.nx > 1 ? b.nx + " " + xName + " atoms" : xName + " atom"),
+      (b.nx > 1 ? b.nx + " " : "") + b.x + chargeSup(-b.qx) + " " + ANION[b.x] + (b.nx > 1 ? " ions" : " ion"), T2, END);
+    var att = mk("text", {"class":"cap", x:(MX1 + XX1)/2, y:CY - 16});
+    att.textContent = "attract";
+    fade(sc, att, END, END + 500, 0, 1);
+
+    placeElectrons(sc);
+    sc.end = END + 600;
+    return sc;
+  }
+  function capSwap(sc, x0, x1, before, after, tA, tB){
+    var a = mk("text", {"class":"cap", x:x0, y:348}); a.textContent = before;
+    var b = mk("text", {"class":"cap strong", x:x1, y:348}); b.textContent = after;
+    fade(sc, a, tA, tA + 400, 1, 0);
+    fade(sc, b, tB - 300, tB + 200, 0, 1);
+  }
+
+  /* Lewis assignment for one atom in a molecule: which sides hold lone pairs, and which
+     unpaired electrons go into each bond. bonds: [{side, order}] */
+  function lewis(val, bonds){
+    var S = 0;
+    bonds.forEach(function(b){ S += b.order; });
+    var P = (val - S)/2;
+    var used = bonds.map(function(b){ return b.side; });
+    var free = [0,1,2,3].filter(function(s){ return used.indexOf(s) < 0; });
+    var pairSides = [];
+    [opp(bonds[0].side), 3, 1, 2, 0].forEach(function(s){
+      if (pairSides.length < P && free.indexOf(s) >= 0 && pairSides.indexOf(s) < 0) pairSides.push(s);
+    });
+    var extra = free.filter(function(s){ return pairSides.indexOf(s) < 0; });
+    bonds.forEach(function(b){
+      b.singles = [b.side];
+      for (var k = 1; k < b.order; k++) b.singles.push(extra.shift());
+    });
+    return pairSides;
+  }
+
+  var TERM_DIRS = {1:[0], 2:[2,0], 3:[2,0,1], 4:[2,0,3,1]};
+  function covalentScene(b){
+    var sc = newScene();
+    var BD = 62, CY = 170;
+    var T0 = 900, MOVE = 1700, END = T0 + MOVE;
+    var dirs = TERM_DIRS[b.n];
+    var cx = b.n === 1 ? 450 - BD/2 : 450;
+    var atoms = [{sym:b.c, who:"a", fx:cx, fy:CY,
+                  sx: b.n === 1 ? 450 - 125 : cx, sy:CY, bonds:[]}];
+    dirs.forEach(function(s){
+      var d = SIDE[s], far = d[0] ? (b.n === 1 ? 250 : 175) : 118, idx = atoms.length;
+      atoms.push({sym:b.t, who:"b", fx:cx + d[0]*BD, fy:CY + d[1]*BD,
+                  sx:atoms[0].sx + d[0]*far, sy:CY + d[1]*far,
+                  bonds:[{side:opp(s), order:b.o, t:idx}]});
+      atoms[0].bonds.push({side:s, order:b.o, t:idx});
+    });
+
+    var lensG = mk("g", {});
+    atoms.forEach(function(a){
+      addAtom(sc, a.sym, "nonmetal", [{t:0, x:a.sx, y:a.sy, r:R}, {t:T0, x:a.sx, y:a.sy, r:R}, {t:END, x:a.fx, y:a.fy, r:R}]);
+      a.pairs = lewis(VAL[a.sym], a.bonds);
+      a.pairs.forEach(function(s){
+        [-1, 1].forEach(function(slot){
+          var p = dotAt(a.sx, a.sy, s, slot), q = dotAt(a.fx, a.fy, s, slot);
+          addElectron(sc, a.who, [{t:0, x:p.x, y:p.y}, {t:T0, x:p.x, y:p.y}, {t:END, x:q.x, y:q.y}]);
+        });
+      });
+    });
+    /* layer order: lenses sit under the symbols */
+    layer.insertBefore(lensG, layer.firstChild);
+
+    /* each bond: the central atom's unpaired electrons and the outer atom's meet in the overlap */
+    atoms[0].bonds.forEach(function(bd){
+      var P = atoms[0], Q = atoms[bd.t];
+      var qb = Q.bonds[0];
+      var mx = (P.fx + Q.fx)/2, my = (P.fy + Q.fy)/2;
+      var ux = (Q.fx - P.fx)/BD, uy = (Q.fy - P.fy)/BD, vx = -uy, vy = ux;
+      var offs = [];
+      for (var j = 0; j < bd.order; j++) offs.push((j - (bd.order - 1)/2)*11);
+      function place(atom, singles, sign){
+        var starts = singles.map(function(s){ return dotAt(atom.sx, atom.sy, s, 0); });
+        starts.sort(function(p, q){ return (p.x*vx + p.y*vy) - (q.x*vx + q.y*vy); });
+        starts.forEach(function(p, k){
+          var ex = mx + sign*ux*4.8 + vx*offs[k], ey = my + sign*uy*4.8 + vy*offs[k];
+          addElectron(sc, atom.who, [{t:0, x:p.x, y:p.y}, {t:T0, x:p.x, y:p.y}, {t:END, x:ex, y:ey}]);
+        });
+      }
+      place(P, bd.singles, -1);
+      place(Q, qb.singles, 1);
+      /* the overlap of the two circles = where the shared electrons live */
+      var a = BD/2, h = Math.sqrt(R*R - a*a);
+      var p1x = mx + vx*h, p1y = my + vy*h, p2x = mx - vx*h, p2y = my - vy*h;
+      var lens = mk("path", {"class":"lens",
+        d:"M" + p1x + " " + p1y + "A" + R + " " + R + " 0 0 1 " + p2x + " " + p2y +
+          "A" + R + " " + R + " 0 0 1 " + p1x + " " + p1y + "Z"}, lensG);
+      fade(sc, lens, END - 200, END + 500, 0, 1);
+    });
+
+    var cap = mk("text", {"class":"cap strong", x:450, y:348});
+    svgText(cap, b.formula + " · " + b.name);
+    fade(sc, cap, END, END + 400, 0, 1);
+
+    placeElectrons(sc);
+    sc.end = END + 600;
+    return sc;
+  }
+
+  /* ---------- explanation panel ---------- */
+  var explain = document.getElementById("explain");
+  var eLegend = document.getElementById("eLegend");
+  var resultEl = document.getElementById("result");
+
+  function ionicExplain(b){
+    var m = EL[b.m].name, x = EL[b.x].name;
+    var each = function(n){ return n > 1 ? "Each " : ""; };
+    var tot = b.nm * b.qm;
+    return "<h2>How it forms</h2><ol>" +
+      "<li><p>" + each(b.nm) + "<b>" + m + "</b> is a metal with " + plural(b.qm, "valence electron") +
+        ". It <span class='ea'>loses " + (b.qm === 1 ? "it" : "all " + b.qm) + "</span> and becomes <b>" +
+        b.m + chargeSup(b.qm) + "</b>, with the same electron arrangement as " + NOBLE[b.m] + ".</p></li>" +
+      "<li><p>" + each(b.nx) + "<b>" + x + "</b> is a nonmetal with " + plural(VAL[b.x], "valence electron") +
+        ". It <span class='eb'>gains " + b.qx + "</span> to reach 8 and becomes <b>" + b.x + chargeSup(-b.qx) +
+        "</b> (" + ANION[b.x] + "), like " + NOBLE[b.x] + ".</p></li>" +
+      "<li><p>The charges must add up to zero: " + b.nm + " " + b.m + chargeSup(b.qm) + " give +" + tot +
+        " and " + b.nx + " " + b.x + chargeSup(-b.qx) + " give −" + tot +
+        (tot > 1 ? ", so " + plural(tot, "electron") + " move in all" : "") +
+        ". Formula: <b>" + b.formula + "</b>.</p></li>" +
+      "<li><p>The <b>ionic bond</b> is the attraction between the positive and negative ions. No electrons are shared.</p></li>" +
+      "</ol><p class='rule'>Rule: metal + nonmetal → electrons transfer → ionic bond.</p>";
+  }
+  function covalentExplain(b){
+    var c = EL[b.c].name, t = EL[b.t].name, same = b.c === b.t;
+    var need = function(s){ return s === "H" ? 1 : 8 - VAL[s]; };
+    var full = function(s){ return s === "H" ? 2 : 8; };
+    var bondWord = ["", "single", "double", "triple"][b.o];
+    var pairs = b.n * b.o;
+    var lines = [];
+    if (same){
+      lines.push("Each <b>" + c + "</b> atom has " + plural(VAL[b.c], "valence electron") + " and needs " +
+        need(b.c) + " more to reach " + full(b.c) + ".");
+    } else {
+      lines.push("<b>" + c + "</b> has " + plural(VAL[b.c], "valence electron") + " and needs " + need(b.c) +
+        " more. <b>" + t + "</b> has " + VAL[b.t] + " and needs " + need(b.t) + " more" +
+        (b.t === "H" ? " (hydrogen is full at 2)" : "") + ".");
+    }
+    lines.push("Both are nonmetals, so neither gives electrons away. They <b>share</b>: " +
+      (b.n === 1 ? plural(b.o, "shared pair") + " — a <b>" + bondWord + " bond</b>."
+                 : b.n + " " + bondWord + " bonds (" + plural(pairs, "shared pair") + ")."));
+    lines.push("Every shared pair has one <span class='ea'>electron</span> from " + (same ? "each atom" : c.toLowerCase()) +
+      (same ? "" : " and one <span class='eb'>electron</span> from " + t.toLowerCase()) + ".");
+    var cLone = (VAL[b.c] - b.n*b.o)/2;
+    var count = "Count the dots around each atom, shared ones included: " +
+      (same ? "each " + lower(b.c) + " has " + full(b.c)
+            : lower(b.c) + " has " + full(b.c) + ", each " + lower(b.t) + " has " + full(b.t)) + ".";
+    if (!same && b.n > 1 && cLone > 0) count += " The " + lower(b.c) + " also keeps " + plural(cLone, "lone pair") + (cLone === 1 ? " that isn't" : " that aren't") + " shared.";
+    lines.push(count);
+    return "<h2>How it forms</h2><ol>" + lines.map(function(l){ return "<li><p>" + l + "</p></li>"; }).join("") +
+      "</ol><p class='rule'>Rule: nonmetal + nonmetal → electrons shared → covalent bond.</p>";
+  }
+
+  /* ---------- selection ---------- */
+  var picks = [];
+  var slots = [document.getElementById("slot0"), document.getElementById("slot1")];
+  var cells = {};
+  var hint = document.getElementById("hint");
+
+  function kindOf(s){ return METALS.indexOf(s) >= 0 ? "metal" : "nonmetal"; }
+
+  function renderSlots(){
+    slots.forEach(function(el, i){
+      var s = picks[i];
+      el.classList.toggle("full", !!s);
+      el.classList.toggle("next", !s && picks.length === i);
+      if (s){
+        el.style.setProperty("--blk", "var(--" + kindOf(s) + ")");
+        el.innerHTML = "<span class='s-sym'>" + s + "</span><span class='s-name'>" + EL[s].name +
+          "<span class='s-kind'>" + kindOf(s) + "</span></span>";
+        el.setAttribute("aria-label", "Remove " + EL[s].name);
+        el.title = "Click to remove";
+      } else {
+        el.style.removeProperty("--blk");
+        el.innerHTML = "<span class='s-sym'>?</span><span class='s-name'>" + (i ? "Second element" : "First element") +
+          "<span class='s-kind'>pick from table</span></span>";
+        el.setAttribute("aria-label", (i ? "Second" : "First") + " element: not picked");
+        el.title = "";
+      }
+    });
+  }
+
+  function renderTable(){
+    var partners = picks.length ? partnersOf(picks[0]) : null;
+    Object.keys(cells).forEach(function(s){
+      var c = cells[s];
+      if (c.classList.contains("out")) return;
+      var sel = picks.indexOf(s) >= 0;
+      var ok = !partners || picks.length === 2 || partners.indexOf(s) >= 0;
+      c.classList.toggle("sel", sel);
+      c.classList.toggle("partner", !!partners && picks.length === 1 && partners.indexOf(s) >= 0);
+      c.classList.toggle("off", !ok && !sel);
+      c.setAttribute("aria-pressed", sel ? "true" : "false");
+    });
+  }
+
+  function update(){
+    renderSlots();
+    renderTable();
+    var a = picks[0], b2 = picks[1];
+    eLegend.innerHTML = "";
+    resultEl.innerHTML = "";
+    if (!a){
+      play(emptyScene());
+      explain.innerHTML = "<h2>The two rules</h2><ol>" +
+        "<li><p><b>Metal + nonmetal → ionic.</b> The metal gives its valence electrons to the nonmetal. Both become ions, and the opposite charges attract.</p></li>" +
+        "<li><p><b>Nonmetal + nonmetal → covalent.</b> Neither atom gives electrons away, so they share pairs until each has 8 (hydrogen: 2).</p></li></ol>";
+      hint.innerHTML = "Click an element to start. Greyed-out elements don't follow these simple rules.";
+      history.replaceState(null, "", location.pathname + location.search);
+      return;
+    }
+    if (!b2){
+      play(atomScene(a));
+      var ps = partnersOf(a);
+      var hasIonic = ps.some(function(p){ return bondFor(a, p).type === "ionic"; });
+      var hasCov = ps.some(function(p){ return bondFor(a, p).type === "covalent"; });
+      var what = hasIonic && hasCov ? "a metal for an ionic bond or a nonmetal for a covalent bond"
+               : hasIonic ? (kindOf(a) === "metal" ? "a nonmetal" : "a metal") + " to make an ionic bond"
+               : "a nonmetal to make a covalent bond";
+      explain.innerHTML = "<h2>" + EL[a].name + "</h2><p><b>" + EL[a].name + "</b> is a " + kindOf(a) + " with " +
+        plural(VAL[a], "valence electron") + ". Now pick " + what + ".</p>";
+      eLegend.innerHTML = "<span><i class='a'></i>valence electrons of " + EL[a].name.toLowerCase() + "</span>";
+      hint.innerHTML = "<b>" + plural(ps.length, "element") + "</b> can bond with " + EL[a].name.toLowerCase() +
+        " (outlined). Pick one" + (ps.indexOf(a) >= 0 ? " — including " + a + " itself" : "") + ".";
+      history.replaceState(null, "", "#" + a);
+      return;
+    }
+    var bd = bondFor(a, b2);
+    resultEl.innerHTML = "<span class='badge " + bd.type + "'>" + bd.type + "</span>" +
+      "<span class='formula'>" + subHTML(bd.formula) + "</span><span class='cname'>" + bd.name + "</span>";
+    if (bd.type === "ionic"){
+      play(ionicScene(bd));
+      explain.innerHTML = subHTML(ionicExplain(bd));
+      eLegend.innerHTML = "<span><i class='a'></i>electrons from " + lower(bd.m) + "</span>" +
+        "<span><i class='b'></i>electrons from " + lower(bd.x) + "</span>";
+    } else {
+      play(covalentScene(bd));
+      explain.innerHTML = subHTML(covalentExplain(bd));
+      var same = bd.c === bd.t;
+      eLegend.innerHTML = "<span><i class='a'></i>electrons from " + (same ? "the left " + lower(bd.c) + " atom" : lower(bd.c)) + "</span>" +
+        "<span><i class='b'></i>electrons from " + (same ? "the right " + lower(bd.t) + " atom" : lower(bd.t)) + "</span>" +
+        "<span><i class='sh'></i>shared region (the bond)</span>";
+    }
+    hint.innerHTML = "Click another element to start a new pair, or click a pick above to remove it.";
+    history.replaceState(null, "", "#" + a + "-" + b2);
+  }
+
+  function choose(s){
+    if (picks.length === 2) picks = [s];
+    else if (picks.length === 1){
+      if (!bondFor(picks[0], s)) return;
+      picks.push(s);
+    } else picks = [s];
+    update();
+  }
+
+  slots.forEach(function(el, i){
+    el.addEventListener("click", function(){
+      if (!picks[i]) return;
+      picks.splice(i, 1);
+      update();
+    });
+  });
+  document.getElementById("clearBtn").addEventListener("click", function(){ picks = []; update(); });
+  document.getElementById("replayBtn").addEventListener("click", function(){ if (current) play(current); });
+
+  /* ---------- periodic table ---------- */
+  var pt = document.getElementById("pt");
+  function div(cls, row, col, html, span){
+    var d = document.createElement("div");
+    d.className = cls;
+    d.style.gridRow = row;
+    d.style.gridColumn = span ? col + " / span " + span : col;
+    if (html) d.innerHTML = html;
+    pt.appendChild(d);
+    return d;
+  }
+  for (var g = 1; g <= 18; g++) div("gh", 1, g + 1, String(g));
+  for (var p = 1; p <= 7; p++) div("ph", p + 1, 1, String(p));
+  div("fgap", 7, 4, "57–71");
+  div("fgap", 8, 4, "89–103");
+  div("spacer", 9, 1);
+  div("frow-label", 10, 1, "La–Lu", 3);
+  div("frow-label", 11, 1, "Ac–Lr", 3);
+  var fIndex = {6:0, 7:0};
+  E.forEach(function(e){
+    var s = e[1], period = e[3], group = e[4], row, col;
+    if (group === 0){ row = period === 6 ? 10 : 11; col = 4 + fIndex[period]++; }
+    else { row = period + 1; col = group + 1; }
+    var b = document.createElement("button");
+    b.type = "button";
+    var inc = INCLUDED.indexOf(s) >= 0;
+    b.className = "cell " + (inc ? kindOf(s) : "out");
+    b.style.gridRow = row; b.style.gridColumn = col;
+    b.innerHTML = "<span class='z'>" + e[0] + "</span><span class='sy'>" + s + "</span><span class='nm'>" + e[2] + "</span>";
+    b.title = e[2] + (inc ? "" : " — not included in these simple rules");
+    if (inc){
+      b.setAttribute("aria-label", e[2]);
+      b.addEventListener("click", function(){
+        if (b.classList.contains("off")) return;
+        choose(s);
+      });
+    } else {
+      b.disabled = true;
+    }
+    cells[s] = b;
+    pt.appendChild(b);
+  });
+
+  var notes = document.querySelector(".notes ul");
+  notes.innerHTML = subHTML(notes.innerHTML);
+
+  /* ---------- theme ---------- */
+  var themeBtn = document.getElementById("themeBtn");
+  function syncThemeBtn(){
+    themeBtn.textContent = document.documentElement.getAttribute("data-theme") === "light" ? "Dark mode" : "Light mode";
+  }
+  themeBtn.addEventListener("click", function(){
+    var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("icb-theme", next); } catch (e) {}
+    syncThemeBtn();
+  });
+  syncThemeBtn();
+
+  /* ---------- start: from the link (#Na-Cl), or sodium chloride ---------- */
+  var h = decodeURIComponent(location.hash.slice(1)).split("-").filter(function(s){ return EL[s]; });
+  if (h.length === 2 && bondFor(h[0], h[1])) picks = [h[0], h[1]];
+  else if (h.length === 1 && INCLUDED.indexOf(h[0]) >= 0) picks = [h[0]];
+  else picks = ["Na", "Cl"];
+  update();
+
+  /* exposed for checking the rules from the console */
+  window.bonding = {bondFor:bondFor, partnersOf:partnersOf, INCLUDED:INCLUDED,
+                    scene:function(){ return current; }, choose:function(a, b){ picks = [a, b]; update(); }};
+})();
+</script>
+</body>
+</html>
